@@ -12,7 +12,6 @@ import 'package:weatherly/widgets/search_widget.dart';
 import 'package:weatherly/widgets/sun_rise_set_widget.dart';
 import 'package:weatherly/widgets/today_weather_info_container.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
@@ -75,12 +74,13 @@ class HomeScreen extends StatelessWidget {
         } else {
           return Scaffold(
             body: Center(
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Oops error",
-                    style: TextStyle(color: Colors.red, fontSize: 20),
+                  Text(
+                    "Oops error ${BlocProvider.of<WeatherCubit>(context).errorMessage}",
+                    style: const TextStyle(color: Colors.red, fontSize: 18),
                   ),
                   TextButton(
                       onPressed: () {

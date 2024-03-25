@@ -1,34 +1,32 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'package:http/http.dart' as http;
 
-import 'package:dio/dio.dart';
 import 'package:weatherly/models/location_weather_model.dart';
 import 'package:weatherly/models/weather_model.dart';
 
 class WeatherService {
-  Dio dio;
-  // https://api.weatherapi.com/v1/forecast.json?key=f1b5be815ddc4c908a7220816242301&q=cairo&days=7
-
+  // https://api.weatherapi.com/v1/forecast.json?key=dcf2e86dce8e4ede80d11030242503&q=cairo&days=7
+  // https://api.weatherapi.com/v1/forecast.json?key=dcf2e86dce8e4ede80d11030242503&q=cairo&days=7&aqi=no&alerts=no
   final String baseUrl = 'https://api.weatherapi.com/v1';
-  final String apiKey = 'dfd4bc244c1b46a79bd181131241703';
+  final String apiKey = 'dcf2e86dce8e4ede80d11030242503';
 
-  WeatherService(this.dio);
+  WeatherService();
 
   Future<WeatherModel> getWeather({required String cityName}) async {
-    try {
-      Response response = await dio
-          .get("$baseUrl/forecast.json?key=$apiKey&q=$cityName&days=7");
-      if (response.statusCode == 200) {
-        return WeatherModel.fromJson(response.data);
-      } else {
-        throw Exception('Failed to load weather data: ${response.statusCode}');
-      }
-    } on DioException catch (e) {
-      log('Dio error: ${e.message}');
-      throw Exception('Failed to load weather data: ${e.message}');
-    } catch (e) {
-      log('Error: $e');
-      throw Exception('Failed to load weather data ');
+    Uri url =
+        Uri.parse('$baseUrl/forecast.json?key=$apiKey&q=$cityName&days=7');
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == 400) {
+      var data = jsonDecode(response.body);
+      throw Exception(data['error']['message']);
     }
+    Map<String, dynamic> data = jsonDecode(response.body);
+
+    WeatherModel weather = WeatherModel.fromJson(data);
+
+    return weather;
   }
 
   static const List<String> cityNames = [
@@ -52,9 +50,12 @@ class WeatherService {
     List<LocationWeatherModel> locationWeatherModel = [];
     try {
       for (var city in cities) {
-        Response response =
-            await dio.get('$baseUrl/forecast.json?key=$apiKey&q=$city&days=1');
-        locationWeatherModel.add(LocationWeatherModel.fromJson(response.data));
+        Uri url =
+            Uri.parse('$baseUrl/forecast.json?key=$apiKey&q=$city&days=1');
+        http.Response response = await http.get(url);
+
+        locationWeatherModel
+            .add(LocationWeatherModel.fromJson(jsonDecode(response.body)));
       }
       return locationWeatherModel;
     } catch (e) {

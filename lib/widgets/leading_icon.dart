@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:weatherly/models/location_weather_model.dart';
 import 'package:weatherly/screens/common_location_weather.dart';
@@ -9,7 +8,7 @@ Widget leadingIcon(context) {
       icon: const Icon(Icons.menu),
       onPressed: () async {
         final List<LocationWeatherModel> locationWeatherList =
-            await WeatherService(Dio()).getLocationWeather();
+            await WeatherService().getLocationWeather();
         // ignore: use_build_context_synchronously
         Navigator.push(
           context,
