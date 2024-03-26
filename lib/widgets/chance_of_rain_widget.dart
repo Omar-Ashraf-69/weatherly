@@ -38,7 +38,7 @@ class ChanceOfRain extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              '${BlocProvider.of<WeatherCubit>(context).weatherModel!.days[BlocProvider.of<WeatherCubit>(context).index].hours[BlocProvider.of<WeatherCubit>(context).weatherModel!.localTime.hour - 1].chanceOfRaining}%',
+              '${BlocProvider.of<WeatherCubit>(context).weatherModel!.days[BlocProvider.of<WeatherCubit>(context).index].hours[BlocProvider.of<WeatherCubit>(context).weatherModel!.localTime.hour].chanceOfRaining}%',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,

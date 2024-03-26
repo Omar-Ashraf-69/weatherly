@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                 actionIcon(context),
               ],
             ),
-            body: SafeArea(
+            body: SingleChildScrollView(
               child: LinerGradentWidget(
                 condition: BlocProvider.of<WeatherCubit>(context)
                     .weatherModel!
