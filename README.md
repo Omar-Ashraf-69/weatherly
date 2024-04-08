@@ -1,6 +1,3 @@
-Certainly! Here's the updated README.md file with the RESTful API included in the technologies used section:
-
----
 
 # Welcome to Weatherly! 🌟
 
